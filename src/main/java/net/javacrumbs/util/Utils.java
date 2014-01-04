@@ -15,8 +15,12 @@
  */
 package net.javacrumbs.util;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import static java.lang.String.format;
 
 public class Utils {
     public static <T> void measure(Runnable runnable) {
@@ -39,6 +43,16 @@ public class Utils {
         T result = supplier.get();
         consumer.accept(System.currentTimeMillis() - start);
         return result;
+    }
+
+
+    public static void log(Object message) {
+        System.out.println(format("%s %s %s ", now(), Thread.currentThread().getName(), message));
+    }
+
+
+    private static String now() {
+        return LocalTime.now().format(DateTimeFormatter.ISO_TIME);
     }
 
 }

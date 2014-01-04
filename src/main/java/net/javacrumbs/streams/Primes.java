@@ -15,12 +15,14 @@
  */
 package net.javacrumbs.streams;
 
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.Math.sqrt;
 import static java.util.stream.LongStream.range;
 import static java.util.stream.LongStream.rangeClosed;
+import static net.javacrumbs.util.Utils.log;
 import static net.javacrumbs.util.Utils.measure;
 
 
@@ -37,7 +39,8 @@ public class Primes {
 //        System.out.println(counter);
 
         measure(() ->
-                System.out.println(range(1, 10_000_000).parallel().filter(Primes::isPrime).count())
+                System.out.println(range(1, 100).parallel().filter(Primes::isPrime).collect(ArrayList::new, Primes::addToList, Primes::combine))
+//                System.out.println(range(1, 100).parallel().filter(Primes::isPrime).findFirst().getAsLong())
         );
 //        System.out.println(measure(() -> range(1, 1_000_000).parallel().filter(Primes::isPrime)).count());
 //        range(1, 100).filter(Primes::isPrime).forEach(System.out::println);
@@ -45,8 +48,19 @@ public class Primes {
 
     }
 
+    private static void addToList(List<Long> list, Long n) {
+        log("Adding " + n + " to " + list);
+        list.add(n);
+    }
+
+    private static void combine(List<Long> list1, List<Long> list2) {
+        log("Combining " + list1 + " and " + list2);
+        list1.addAll(list2);
+    }
+
 
     private static boolean isPrime(long n) {
+        log("Checking " + n);
         return n > 1 && rangeClosed(2, (long) sqrt(n)).noneMatch(divisor -> n % divisor == 0);
     }
 

@@ -3,6 +3,8 @@
  */
 package net.javacrumbs.asyncmvc;
 
+import net.javacrumbs.util.Utils;
+
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.CompletableFuture;
@@ -10,6 +12,7 @@ import java.util.concurrent.ExecutionException;
 
 import static java.lang.String.format;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
+import static net.javacrumbs.util.Utils.log;
 
 public class CreditRatingService {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
@@ -27,7 +30,7 @@ public class CreditRatingService {
         CompletableFuture<User> user = supplyAsync(() -> getUser(userId));
         CompletableFuture<CreditRating> rating1 = user.thenApplyAsync(CreditRatingService::getCreditRatingSystem1);
         CompletableFuture<CreditRating> rating2 = user.thenApplyAsync(CreditRatingService::getCreditRatingSystem2);
-        rating1.thenCombineAsync(rating2, CreditRating::combine).thenAccept(CreditRatingService::log);
+        rating1.thenCombineAsync(rating2, CreditRating::combine).thenAccept(Utils::log);
 
         // getCreditRating(userId).thenAccept(System.out::println);
 
@@ -70,9 +73,6 @@ public class CreditRatingService {
         return new CreditRating(user, 100);
     }
 
-    private static void log(Object message) {
-        System.out.println(format("%s %s %s ", now(), Thread.currentThread().getName(), message));
-    }
 
     private static void sleep(int i) {
         try {
@@ -81,11 +81,6 @@ public class CreditRatingService {
 
         }
     }
-
-    private static String now() {
-        return LocalTime.now().format(DateTimeFormatter.ISO_TIME);
-    }
-
 
     public static class User {
         private final int id;
