@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutionException;
 import static java.lang.String.format;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static net.javacrumbs.util.Utils.log;
+import static net.javacrumbs.util.Utils.sleep;
 
 public class CreditRatingService {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
@@ -73,14 +74,6 @@ public class CreditRatingService {
         return new CreditRating(user, 100);
     }
 
-
-    private static void sleep(int i) {
-        try {
-            Thread.sleep(i);
-        } catch (InterruptedException e) {
-
-        }
-    }
 
     public static class User {
         private final int id;

@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 
 public class FizzBuzz {
     public static void main(String[] args) {
-        IntStream.range(1,101).parallel().mapToObj( i-> {
+        IntStream.rangeClosed(1,100).mapToObj(i -> {
             if (i % 3 == 0) {
                 if (i % 5 == 0) {
                     return "FizzBuzz";
@@ -32,6 +32,6 @@ public class FizzBuzz {
             } else {
                 return Integer.toString(i);
             }
-        }).forEachOrdered(System.out::println);
+        }).forEach(System.out::println);
     }
 }

@@ -55,4 +55,13 @@ public class Utils {
         return LocalTime.now().format(DateTimeFormatter.ISO_TIME);
     }
 
+
+    public static void sleep(int i) {
+        try {
+            Thread.sleep(i);
+        } catch (InterruptedException e) {
+
+        }
+    }
+
 }

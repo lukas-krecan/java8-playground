@@ -17,13 +17,16 @@ package net.javacrumbs.streams;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 import static java.lang.Math.sqrt;
 import static java.util.stream.LongStream.range;
 import static java.util.stream.LongStream.rangeClosed;
 import static net.javacrumbs.util.Utils.log;
 import static net.javacrumbs.util.Utils.measure;
+import static net.javacrumbs.util.Utils.sleep;
 
 
 public class Primes {
@@ -38,9 +41,10 @@ public class Primes {
 //
 //        System.out.println(counter);
 
+
         measure(() ->
-                System.out.println(range(1, 100).parallel().filter(Primes::isPrime).collect(ArrayList::new, Primes::addToList, Primes::combine))
-//                System.out.println(range(1, 100).parallel().filter(Primes::isPrime).findFirst().getAsLong())
+                System.out.println(range(1, 1024).parallel().filter(Primes::isPrime).collect(ArrayList::new, Primes::addToList, Primes::combine))
+//              System.out.println(range(1, 100).parallel().filter(Primes::isPrime).findFirst().getAsLong())
         );
 //        System.out.println(measure(() -> range(1, 1_000_000).parallel().filter(Primes::isPrime)).count());
 //        range(1, 100).filter(Primes::isPrime).forEach(System.out::println);
@@ -61,7 +65,10 @@ public class Primes {
 
     private static boolean isPrime(long n) {
         log("Checking " + n);
-        return n > 1 && rangeClosed(2, (long) sqrt(n)).noneMatch(divisor -> n % divisor == 0);
+        //if (n == 95) sleep(1000);
+        boolean isPrime = n > 1 && rangeClosed(2, (long) sqrt(n)).noneMatch(divisor -> n % divisor == 0);
+        if (isPrime) log("Prime found " + n);
+        return isPrime;
     }
 
     private static boolean isPrime2(long n) {
