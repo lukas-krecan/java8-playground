@@ -18,12 +18,9 @@ package net.javacrumbs.streams;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.Arrays.stream;
 
 public class Grep {
     public static void main(String[] args) throws IOException {

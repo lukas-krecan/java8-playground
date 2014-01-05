@@ -5,12 +5,9 @@ package net.javacrumbs.asyncmvc;
 
 import net.javacrumbs.util.Utils;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static java.lang.String.format;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static net.javacrumbs.util.Utils.log;
 import static net.javacrumbs.util.Utils.sleep;

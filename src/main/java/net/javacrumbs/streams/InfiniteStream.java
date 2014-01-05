@@ -16,7 +16,6 @@
 package net.javacrumbs.streams;
 
 import java.math.BigInteger;
-import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 

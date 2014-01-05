@@ -17,16 +17,12 @@ package net.javacrumbs.streams;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ForkJoinPool;
-import java.util.stream.Collectors;
-import java.util.stream.LongStream;
 
 import static java.lang.Math.sqrt;
 import static java.util.stream.LongStream.range;
 import static java.util.stream.LongStream.rangeClosed;
 import static net.javacrumbs.util.Utils.log;
 import static net.javacrumbs.util.Utils.measure;
-import static net.javacrumbs.util.Utils.sleep;
 
 
 public class Primes {

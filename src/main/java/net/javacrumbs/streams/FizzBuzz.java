@@ -15,8 +15,8 @@
  */
 package net.javacrumbs.streams;
 
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class FizzBuzz {
     public static void main(String[] args) {
@@ -32,6 +32,6 @@ public class FizzBuzz {
             } else {
                 return Integer.toString(i);
             }
-        }).forEach(System.out::println);
+        }).collect(Collectors.toList());
     }
 }
