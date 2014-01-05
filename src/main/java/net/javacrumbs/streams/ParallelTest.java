@@ -32,20 +32,20 @@ public class ParallelTest {
     public static void main(String[] args) throws InterruptedException {
         ExecutorService es = Executors.newCachedThreadPool();
 
-        es.execute(()-> measure(() -> createStream().filter(ParallelTest::isPrime).peek(i -> Utils.sleep(1000)).max()));
-        es.execute(()-> measure(() -> createStream().filter(ParallelTest::isPrime).max()));
-        es.execute(()-> measure(() -> createStream().filter(ParallelTest::isPrime).max()));
-        es.execute(()-> measure(() -> createStream().filter(ParallelTest::isPrime).max()));
-        es.execute(()-> measure(() -> createStream().filter(ParallelTest::isPrime).max()));
-        es.execute(()-> measure(() -> createStream().filter(ParallelTest::isPrime).max()));
+        es.execute(() -> runTask(1000));
+        es.execute(() -> runTask(0));
+        es.execute(() -> runTask(0));
+        es.execute(() -> runTask(0));
+        es.execute(() -> runTask(0));
+        es.execute(() -> runTask(0));
 
 
         es.shutdown();
         es.awaitTermination(1000, TimeUnit.MILLISECONDS);
     }
 
-    private static IntStream createStream() {
-        return range(1, 1_000_000).parallel();
+    private static void runTask(int delay) {
+        measure(() -> range(1, 1_000_000).parallel().filter(ParallelTest::isPrime).peek(i -> Utils.sleep(delay)).max());
     }
 
     public static boolean isPrime(long n) {

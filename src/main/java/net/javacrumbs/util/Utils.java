@@ -57,11 +57,13 @@ public class Utils {
 
 
     public static void sleep(int i) {
-        try {
-            //log("Sleep " + i);
-            Thread.sleep(i);
-        } catch (InterruptedException e) {
+        if (i > 0) {
+            try {
+                //log("Sleep " + i);
+                Thread.sleep(i);
+            } catch (InterruptedException e) {
 
+            }
         }
     }
 
