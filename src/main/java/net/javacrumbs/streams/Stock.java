@@ -56,6 +56,8 @@ public class Stock {
                         .max(Comparator.comparingDouble(StockInfo::getPrice))
                         .ifPresent(System.out::println)
         );
+
+        executorService.shutdown();
     }
 
 
@@ -73,6 +75,8 @@ public class Stock {
                         .max(Comparator.comparingDouble(StockInfo::getPrice))
                         .ifPresent(System.out::println)
         );
+
+        executorService.shutdown();
     }
 
 

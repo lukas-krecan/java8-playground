@@ -59,7 +59,7 @@ public class Primes {
     }
 
 
-    private static boolean isPrime(long n) {
+    public static boolean isPrime(long n) {
         log("Checking " + n);
         //if (n == 95) sleep(1000);
         boolean isPrime = n > 1 && rangeClosed(2, (long) sqrt(n)).noneMatch(divisor -> n % divisor == 0);

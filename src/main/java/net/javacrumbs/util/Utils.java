@@ -24,7 +24,7 @@ import static java.lang.String.format;
 
 public class Utils {
     public static <T> void measure(Runnable runnable) {
-        measure(runnable, time -> System.out.println("Time taken: " + time + "ms"));
+        measure(runnable, time -> log("Time taken: " + time + "ms"));
     }
 
 
@@ -35,7 +35,7 @@ public class Utils {
     }
 
     public static <T> T measure(Supplier<T> supplier) {
-        return measure(supplier, time -> System.out.println("Time taken: " + time + "ms"));
+        return measure(supplier, time -> log("Time taken: " + time + "ms"));
     }
 
     public static <T> T measure(Supplier<T> supplier, Consumer<Long> consumer) {
@@ -58,6 +58,7 @@ public class Utils {
 
     public static void sleep(int i) {
         try {
+            //log("Sleep " + i);
             Thread.sleep(i);
         } catch (InterruptedException e) {
 
