@@ -15,6 +15,8 @@
  */
 package net.javacrumbs.streams;
 
+import net.javacrumbs.common.StockInfo;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -29,9 +31,9 @@ import java.util.stream.Collectors;
 
 import static java.lang.Math.abs;
 import static java.util.Arrays.asList;
-import static net.javacrumbs.util.Utils.log;
-import static net.javacrumbs.util.Utils.measure;
-import static net.javacrumbs.util.Utils.sleep;
+import static net.javacrumbs.common.Utils.log;
+import static net.javacrumbs.common.Utils.measure;
+import static net.javacrumbs.common.Utils.sleep;
 
 public class Stock {
     private void doRun(List<String> symbols) {
@@ -59,7 +61,6 @@ public class Stock {
 
         executorService.shutdown();
     }
-
 
 
     private void doRun3(List<String> symbols) {
@@ -90,36 +91,11 @@ public class Stock {
         return abs(symbol.hashCode()) % 1000.0;
     }
 
-    private StockInfo getFutureValue(Future<StockInfo> f){
+    private StockInfo getFutureValue(Future<StockInfo> f) {
         try {
             return f.get(500, TimeUnit.MILLISECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             throw new CompletionException(e);
-        }
-    }
-
-
-    public static class StockInfo {
-        private final String ticker;
-
-
-        private final double price;
-
-        public StockInfo(final String symbol, final double thePrice) {
-            ticker = symbol;
-            price = thePrice;
-        }
-
-        public double getPrice() {
-            return price;
-        }
-
-        public String getTicker() {
-            return ticker;
-        }
-
-        public String toString() {
-            return String.format("ticker: %s price: %g", ticker, price);
         }
     }
 

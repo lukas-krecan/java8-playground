@@ -15,18 +15,16 @@
  */
 package net.javacrumbs.streams;
 
-import net.javacrumbs.util.Utils;
+import net.javacrumbs.common.Utils;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.IntStream;
 
 import static java.lang.Math.sqrt;
 import static java.util.stream.IntStream.range;
 import static java.util.stream.LongStream.rangeClosed;
-import static net.javacrumbs.util.Utils.log;
-import static net.javacrumbs.util.Utils.measure;
+import static net.javacrumbs.common.Utils.measure;
 
 public class ParallelTest {
     public static void main(String[] args) throws InterruptedException {

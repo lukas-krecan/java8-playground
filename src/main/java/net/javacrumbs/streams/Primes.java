@@ -17,23 +17,25 @@ package net.javacrumbs.streams;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.lang.Math.sqrt;
 import static java.util.stream.LongStream.range;
 import static java.util.stream.LongStream.rangeClosed;
-import static net.javacrumbs.util.Utils.log;
-import static net.javacrumbs.util.Utils.measure;
+import static net.javacrumbs.common.Utils.log;
+import static net.javacrumbs.common.Utils.measure;
 
 
 public class Primes {
     public static void main(String[] args) {
-//        AtomicInteger counter = new AtomicInteger();
+        AtomicInteger counter = new AtomicInteger();
 //
-//        System.out.println(
-//                new Random(12345L).longs(1, 100)
-//                        .peek(i -> counter.incrementAndGet())
-//                        .filter(Primes::isPrime).findFirst().getAsLong()
-//        );
+        System.out.println(
+                new Random(12345L).longs(1, 10_000_000)
+                        .peek(i -> counter.incrementAndGet())
+                        .filter(Primes::isPrime).findFirst().getAsLong()
+        );
 //
 //        System.out.println(counter);
 

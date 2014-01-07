@@ -3,14 +3,14 @@
  */
 package net.javacrumbs.asyncmvc;
 
-import net.javacrumbs.util.Utils;
+import net.javacrumbs.common.Utils;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import static java.util.concurrent.CompletableFuture.supplyAsync;
-import static net.javacrumbs.util.Utils.log;
-import static net.javacrumbs.util.Utils.sleep;
+import static net.javacrumbs.common.Utils.log;
+import static net.javacrumbs.common.Utils.sleep;
 
 public class CreditRatingService {
     public static void main(String[] args) throws ExecutionException, InterruptedException {

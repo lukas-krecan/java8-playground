@@ -13,16 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.javacrumbs.util;
+package net.javacrumbs.demos.lambda;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import net.javacrumbs.streams.Primes;
+
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static java.lang.String.format;
+import static net.javacrumbs.common.Utils.log;
 
-public class Utils {
+public class MeasureSolution {
+
+    public static void main(String[] args) {
+        measure(() -> isPrimePrint(1_854_527));
+        System.out.println(measure(() -> isPrime(1_854_527)));
+    }
+
     public static <T> void measure(Runnable runnable) {
         measure(runnable, time -> log("Time taken: " + time + "ms"));
     }
@@ -45,26 +51,11 @@ public class Utils {
         return result;
     }
 
-
-    public static void log(Object message) {
-        System.out.println(format("%s %s %s ", now(), Thread.currentThread().getName(), message));
+    private static void isPrimePrint(long number) {
+        System.out.println(Primes.isPrime(number));
     }
 
-
-    private static String now() {
-        return LocalTime.now().format(DateTimeFormatter.ISO_TIME);
+    private static boolean isPrime(long number) {
+        return Primes.isPrime(number);
     }
-
-
-    public static void sleep(int i) {
-        if (i > 0) {
-            try {
-                //log("Sleep " + i);
-                Thread.sleep(i);
-            } catch (InterruptedException e) {
-
-            }
-        }
-    }
-
 }
