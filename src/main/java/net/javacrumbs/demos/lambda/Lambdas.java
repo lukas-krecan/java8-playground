@@ -15,25 +15,28 @@
  */
 package net.javacrumbs.demos.lambda;
 
-import net.javacrumbs.streams.Primes;
+import net.javacrumbs.common.StockInfo;
 
-import static net.javacrumbs.common.Utils.log;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.BiFunction;
 
-public class Measure {
+import static java.util.Arrays.asList;
+
+public class Lambdas {
 
     public static void main(String[] args) {
-        long start = System.currentTimeMillis();
-        isPrimePrint(1_854_527);
-        log("Time taken " + (System.currentTimeMillis() - start) + "ms.");
+        List<StockInfo> stocks = asList(
+                new StockInfo("GOOG", 456),
+                new StockInfo("IBM", 456),
+                new StockInfo("AMZ", 123)
+        );
 
-        //measure(() -> isPrimePrint(1_854_527));
-    }
-
-    private static void isPrimePrint(long number) {
-        System.out.println(Primes.isPrime(number));
-    }
-
-    private static boolean isPrime(long number) {
-        return Primes.isPrime(number);
+        stocks.sort(new Comparator<StockInfo>() {
+            @Override
+            public int compare(StockInfo o1, StockInfo o2) {
+                return Double.compare(o1.getPrice(), o2.getPrice());
+            }
+        });
     }
 }

@@ -18,7 +18,6 @@ package net.javacrumbs.common;
 public class StockInfo {
     private final String ticker;
 
-
     private final double price;
 
     public StockInfo(final String symbol, final double thePrice) {

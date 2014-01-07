@@ -17,6 +17,7 @@ package net.javacrumbs.demos.lambda;
 
 import net.javacrumbs.common.StockInfo;
 
+import java.util.Comparator;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -42,7 +43,7 @@ public class MethodReferences {
 
 
         //reference to method of the instance
-        stocks.sort(comparingDouble(StockInfo::getPrice));
+        stocks.sort(Comparator.comparingDouble(StockInfo::getPrice));
         System.out.println("By price 1 " + stocks);
 
         //instance and a parameter
