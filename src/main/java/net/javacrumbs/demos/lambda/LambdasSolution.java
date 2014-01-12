@@ -42,9 +42,13 @@ public class LambdasSolution {
         stocks.sort((o1, o2) -> Double.compare(o1.getPrice(), o2.getPrice()));
 
         Comparator<StockInfo> s1 = (o1, o2) -> Double.compare(o1.getPrice(), o2.getPrice());
+
         BiFunction<StockInfo, StockInfo, Integer> s2 = (o1, o2) -> Double.compare(o1.getPrice(), o2.getPrice());
 
         String hallo = "Hallo";
-        Runnable r = () -> System.out.println(hallo);
+        Runnable r = () -> System.out.println(hallo); //scoping
+        r.run();
+
+        //hallo = "";
     }
 }
