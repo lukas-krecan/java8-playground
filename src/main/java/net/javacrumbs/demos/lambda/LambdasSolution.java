@@ -15,35 +15,40 @@
  */
 package net.javacrumbs.demos.lambda;
 
-import net.javacrumbs.common.StockInfo;
+import net.javacrumbs.common.Person;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.BiFunction;
 
 import static java.util.Arrays.asList;
+import static net.javacrumbs.common.Person.Sex.FEMALE;
+import static net.javacrumbs.common.Person.Sex.MALE;
 
 public class LambdasSolution {
 
     public static void main(String[] args) {
-        List<StockInfo> stocks = asList(
-                new StockInfo("GOOG", 456),
-                new StockInfo("IBM", 456),
-                new StockInfo("AMZ", 123)
+        List<Person> people = asList(
+                new Person("Bill", 23, MALE),
+                new Person("John", 25, MALE),
+                new Person("Jane", 25, FEMALE),
+                new Person("Adam", 30, MALE)
         );
 
-        stocks.sort(new Comparator<StockInfo>() {
+        people.sort(new Comparator<Person>() {
             @Override
-            public int compare(StockInfo o1, StockInfo o2) {
-                return Double.compare(o1.getPrice(), o2.getPrice());
+            public int compare(Person p1, Person p2) {
+                return Integer.compare(p1.getAge(), p2.getAge());
             }
         });
 
-        stocks.sort((o1, o2) -> Double.compare(o1.getPrice(), o2.getPrice()));
+        people.sort((p1, p2) -> Integer.compare(p1.getAge(), p2.getAge()));
 
-        Comparator<StockInfo> s1 = (o1, o2) -> Double.compare(o1.getPrice(), o2.getPrice());
+        System.out.println(people);
 
-        BiFunction<StockInfo, StockInfo, Integer> s2 = (o1, o2) -> Double.compare(o1.getPrice(), o2.getPrice());
+        Comparator<Person> s1 = (p1, p2) -> Integer.compare(p1.getAge(), p2.getAge());
+
+        BiFunction<Person, Person, Integer> s2 = (p1, p2) -> Integer.compare(p1.getAge(), p2.getAge());
 
         String hallo = "Hallo";
         Runnable r = () -> System.out.println(hallo); //scoping

@@ -15,7 +15,8 @@
  */
 package net.javacrumbs.demos.lambda;
 
-import net.javacrumbs.common.StockInfo;
+import net.javacrumbs.common.Person;
+import net.javacrumbs.common.Person;
 
 import java.util.Comparator;
 import java.util.List;
@@ -23,28 +24,31 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparingDouble;
+import static net.javacrumbs.common.Person.Sex.FEMALE;
+import static net.javacrumbs.common.Person.Sex.MALE;
 
 public class MethodReferences {
 
     public static void main(String[] args) {
-        List<StockInfo> stocks = asList(
-                new StockInfo("GOOG", 456),
-                new StockInfo("IBM", 456),
-                new StockInfo("AMZ", 123)
+        List<Person> people = asList(
+                new Person("Bill", 23, MALE),
+                new Person("John", 25, MALE),
+                new Person("Jane", 25, FEMALE),
+                new Person("Adam", 30, MALE)
         );
 
         //lambda - see the type inference
-        stocks.sort((a, b) -> a.getTicker().compareTo(b.getTicker()));
-        System.out.println("By ticker " + stocks);
+        people.sort((a, b) -> a.getName().compareTo(b.getName()));
+        System.out.println("By name " + people);
 
         //reference to static method
-        stocks.sort(MethodReferences::compareByPrice);
-        System.out.println("By price 2 " + stocks);
+        people.sort(MethodReferences::compareByAge);
+        System.out.println("By age 1 " + people);
 
 
         //reference to method of the instance
-        stocks.sort(Comparator.comparingDouble(StockInfo::getPrice));
-        System.out.println("By price 1 " + stocks);
+        people.sort(Comparator.comparingInt(Person::getAge));
+        System.out.println("By age 2 " + people);
 
         //instance and a parameter
         List<String> strings = asList("Barbara", "James", "Mary", "John", "Patricia", "Robert", "Michael", "Linda");
@@ -56,12 +60,12 @@ public class MethodReferences {
 
         //default methods
         //collection.sort() .stream() are default methods
-        stocks.sort(comparingDouble(StockInfo::getPrice).reversed().thenComparing(comparing(StockInfo::getTicker)));
-        System.out.println("By price and name " + stocks);
+        people.sort(comparingDouble(Person::getAge).reversed().thenComparing(comparing(Person::getName)));
+        System.out.println("By price and name " + people);
     }
 
-    private static int compareByPrice(StockInfo s1, StockInfo s2) {
-        return Double.compare(s1.getPrice(), s2.getPrice());
+    private static int compareByAge(Person s1, Person s2) {
+        return Integer.compare(s1.getAge(), s2.getAge());
     }
 
 

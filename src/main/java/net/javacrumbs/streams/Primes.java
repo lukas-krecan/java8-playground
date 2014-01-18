@@ -41,10 +41,10 @@ public class Primes {
 
 
         measure(() ->
-                System.out.println(range(1, 1024).parallel().filter(Primes::isPrime).collect(ArrayList::new, Primes::addToList, Primes::combine))
+                range(1, 10_000_000).parallel().filter(Primes::isPrime).count()
+//                System.out.println(range(1, 1024).parallel().filter(Primes::isPrime).collect(ArrayList::new, Primes::addToList, Primes::combine))
 //              System.out.println(range(1, 100).parallel().filter(Primes::isPrime).findFirst().getAsLong())
         );
-//        System.out.println(measure(() -> range(1, 1_000_000).parallel().filter(Primes::isPrime)).count());
 //        range(1, 100).filter(Primes::isPrime).forEach(System.out::println);
 
 
@@ -62,10 +62,10 @@ public class Primes {
 
 
     public static boolean isPrime(long n) {
-        log("Checking " + n);
+//        log("Checking " + n);
         //if (n == 95) sleep(1000);
         boolean isPrime = n > 1 && rangeClosed(2, (long) sqrt(n)).noneMatch(divisor -> n % divisor == 0);
-        if (isPrime) log("Prime found " + n);
+//        if (isPrime) log("Prime found " + n);
         return isPrime;
     }
 
