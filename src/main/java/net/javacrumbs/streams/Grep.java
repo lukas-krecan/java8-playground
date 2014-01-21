@@ -22,17 +22,23 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
+
 public class Grep {
     public static void main(String[] args) throws IOException {
         try (Stream<String> lines = Files.lines(Paths.get("test.txt"))) {
             System.out.println(
-//                    lines.flatMap(line -> split(line)).filter(word-> word.startsWith("s")).collect(Collectors.toList())
+                    lines.flatMap(Grep::split).filter(word -> word.startsWith("s")).collect(Collectors.toList())
 //                    lines.flatMap(line -> split(line)).filter(word-> word.startsWith("s")).count()
-                    lines.flatMap(line -> split(line)).collect(Collectors.toMap(w -> w, w -> 1, (a, b) -> a + b))
-                            .entrySet().stream().filter(e -> e.getValue() > 1).collect(Collectors.toList())
+//                    lines.flatMap(Grep::split).collect(Collectors.toMap(w -> w, w -> 1, (a, b) -> a + b))
+//                            .entrySet().stream().filter(e -> e.getValue() > 1).collect(Collectors.toList())
+//                     lines.flatMap(Grep::split).collect(groupingBy(w -> w, counting()))
+//                            .entrySet().stream().filter(e -> e.getValue() > 1).collect(Collectors.toList())
 //                    lines.flatMap(line -> split(line)).count()
 //                    lines.filter(line -> line.contains("dolor")).count()
             );
+
         }
     }
 

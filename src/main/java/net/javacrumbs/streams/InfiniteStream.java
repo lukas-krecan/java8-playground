@@ -23,14 +23,14 @@ public class InfiniteStream {
 
     public static void main(String[] args) {
         Stream<BigInteger> infiniteStream = Stream.iterate(BigInteger.ZERO, i -> i.add(BigInteger.ONE));
-        //infiniteStream.skip(10000000).forEach(System.out::println);
+        infiniteStream.skip(10000000).limit(10).forEach(System.out::println);
 
         Stream<BigInteger> factorials = Stream.iterate(FactorialAndIndex.first(), fi -> fi.next()).map(fi -> fi.factorial);
         factorials.limit(100).forEach(System.out::println);
         //factorials.skip(4).findFirst().ifPresent(System.out::println);
 
-        Stream<FactorialAndIndex> factAndIndexes = Stream.iterate(FactorialAndIndex.first(), fi -> fi.next());
-        factAndIndexes.limit(1000).forEach(System.out::println);
+//        Stream<FactorialAndIndex> factAndIndexes = Stream.iterate(FactorialAndIndex.first(), fi -> fi.next());
+//        factAndIndexes.limit(1000).forEach(System.out::println);
     }
 
     private static class FactorialAndIndex {

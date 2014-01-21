@@ -36,6 +36,16 @@ import static net.javacrumbs.common.Utils.measure;
 import static net.javacrumbs.common.Utils.sleep;
 
 public class Stock {
+
+    public static void main(String[] args) {
+        List<String> symbols = asList(
+                "AMD", "HPQ", "IBM", "TXN", "VMW", "XRX", "AAPL", "ADBE",
+                "AMZN", "CRAY", "CSCO", "DELL", "GOOG", "INTC", "INTU",
+                "MSFT", "ORCL", "TIBX", "VRSN", "YHOO");
+
+        new Stock().doRun(symbols);
+    }
+
     private void doRun(List<String> symbols) {
         measure(() ->
                 symbols.stream()
@@ -99,14 +109,5 @@ public class Stock {
         }
     }
 
-
-    public static void main(String[] args) {
-        List<String> symbols = asList(
-                "AMD", "HPQ", "IBM", "TXN", "VMW", "XRX", "AAPL", "ADBE",
-                "AMZN", "CRAY", "CSCO", "DELL", "GOOG", "INTC", "INTU",
-                "MSFT", "ORCL", "TIBX", "VRSN", "YHOO");
-
-        new Stock().doRun2(symbols);
-    }
 
 }

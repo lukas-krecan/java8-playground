@@ -18,23 +18,19 @@ package net.javacrumbs.demos.streams;
 import net.javacrumbs.common.Person;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
 import static java.util.stream.Collectors.averagingInt;
-import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.maxBy;
-import static java.util.stream.Collectors.reducing;
 import static net.javacrumbs.common.Person.Sex.FEMALE;
 import static net.javacrumbs.common.Person.Sex.MALE;
 
-public class StreamsSolution {
+public class Streams {
     private static final List<Person> people = asList(
             new Person("Bill", 23, MALE),
             new Person("John", 25, MALE),
@@ -47,66 +43,25 @@ public class StreamsSolution {
         people.stream().forEach(System.out::println);
 
         System.out.println("just the names");
-        people.stream().map(Person::getName).forEach(System.out::println);
 
         System.out.println("just the names sorted by age");
-        people.stream()
-                .sorted(comparing(Person::getAge))
-                .map(Person::getName)
-                .forEach(System.out::println);
 
         System.out.println("just guys sorted by name");
-        people.stream()
-                .filter(p -> p.getGender() == MALE)
-                .sorted(comparing(Person::getName))
-                .forEach(System.out::println);
 
         System.out.println("max age");
-        people.stream()
-                .max(comparing(Person::getAge)).ifPresent(System.out::println);
 
         System.out.println("avg age");
-        people.stream()
-                .mapToInt(Person::getAge).average().ifPresent(System.out::println);
 
         System.out.println("Number of women");
-        System.out.println(
-                people.stream()
-                        .filter(p -> p.getGender() == FEMALE)
-                        .count()
-        );
 
         System.out.println("just guys sorted by name as list");
-        System.out.println(
-                people.stream()
-                        .filter(p -> p.getGender() == MALE)
-                        .sorted(comparing(Person::getName))
-                        .collect(Collectors.toList())
-        );
 
         System.out.println("Males and females in map");
-        System.out.println(
-                people.stream()
-                        .collect(groupingBy(Person::getGender))
-        );
 
         System.out.println("Average age by gender");
-        System.out.println(
-                people.stream()
-                        .collect(groupingBy(Person::getGender, averagingInt(Person::getAge)))
-        );
-
 
         System.out.println("Max age by gender");
-        System.out.println(
-                people.stream()
-                        .collect(groupingBy(Person::getGender, mapping(Person::getAge, maxBy(naturalOrder()))))
-        );
 
         System.out.println("First male older than 24");
-        System.out.println("Found: " +
-                people.stream().peek(System.out::println).filter(p -> p.getAge() > 24).findFirst().get()
-        );
-
     }
 }
