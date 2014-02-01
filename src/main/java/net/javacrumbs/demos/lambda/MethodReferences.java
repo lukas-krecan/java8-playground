@@ -46,15 +46,16 @@ public class MethodReferences {
         System.out.println("By age 1 " + people);
 
 
-        //reference to method of the instance
-        people.sort(Comparator.comparingInt(Person::getAge));
-        System.out.println("By age 2 " + people);
-
         //instance and a parameter
         List<String> strings = asList("Barbara", "James", "Mary", "John", "Patricia", "Robert", "Michael", "Linda");
         strings.sort(String::compareToIgnoreCase);
         System.out.println("Strings ignore case " + strings);
 
+        //reference to method of the instance
+        people.sort(Comparator.comparingInt(Person::getAge));
+        System.out.println("By age 2 " + people);
+
+        System.out.println(strings.toArray(new String[strings.size()])); //cant do new T[]
         //constructor reference
         System.out.println(strings.stream().toArray(String[]::new));
 
