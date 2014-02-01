@@ -18,15 +18,19 @@ package net.javacrumbs.demos.streams;
 import net.javacrumbs.common.Person;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparingInt;
+import static java.util.Comparator.comparingLong;
 import static java.util.Comparator.naturalOrder;
 import static java.util.stream.Collectors.averagingInt;
 import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.maxBy;
@@ -106,6 +110,17 @@ public class StreamsSolution {
         System.out.println("First male older than 24");
         System.out.println("Found: " +
                 people.stream().peek(System.out::println).filter(p -> p.getAge() > 24).findFirst().get()
+        );
+
+        System.out.println("Most frequent character in the name");
+        System.out.println(
+                people.stream()
+                        .map(Person::getName)
+                        .flatMapToInt(String::chars)
+                        .mapToObj(i -> Character.valueOf((char) i))
+                        .map(Character::toLowerCase)
+                        .collect(groupingBy(c -> c, counting()))
+                        .entrySet().stream().max(comparingLong(Map.Entry::getValue))
         );
 
     }
