@@ -63,5 +63,7 @@ public class Streams {
         System.out.println("Max age by gender");
 
         System.out.println("First male older than 24");
+
+        System.out.println("Most frequent character in the name");
     }
 }

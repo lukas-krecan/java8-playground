@@ -15,6 +15,8 @@
  */
 package net.javacrumbs.streams;
 
+import net.javacrumbs.common.Utils;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -44,7 +46,7 @@ public class ParallelTest {
 
     private static void runTask(int delay) {
         range(1, 1_000_000).parallel().filter(ParallelTest::isPrime).peek(i -> sleep(delay)).max()
-                .ifPresent(max -> System.out.println(Thread.currentThread() + " " + max));
+                .ifPresent(Utils::log);
     }
 
     public static boolean isPrime(long n) {

@@ -24,6 +24,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparingDouble;
+import static java.util.Comparator.comparingInt;
 import static net.javacrumbs.common.Person.Sex.FEMALE;
 import static net.javacrumbs.common.Person.Sex.MALE;
 
@@ -61,7 +62,7 @@ public class MethodReferences {
 
         //default methods
         //collection.sort() .stream() are default methods
-        people.sort(comparingDouble(Person::getAge).reversed().thenComparing(comparing(Person::getName)));
+        people.sort(comparingInt(Person::getAge).reversed().thenComparing(comparing(Person::getName)));
         System.out.println("By price and name " + people);
     }
 
