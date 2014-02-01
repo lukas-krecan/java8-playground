@@ -43,12 +43,12 @@ public class Stock {
                 "AMZN", "CRAY", "CSCO", "DELL", "GOOG", "INTC", "INTU",
                 "MSFT", "ORCL", "TIBX", "VRSN", "YHOO");
 
-        new Stock().doRun2(symbols);
+        new Stock().doRun(symbols);
     }
 
     private void doRun(List<String> symbols) {
         measure(() ->
-                symbols.stream()
+                symbols.stream().parallel()
                         .map(this::getStockInfo) //slow network operation
                         .filter(s -> s.getPrice() < 500)
                         .max(Comparator.comparingDouble(StockInfo::getPrice))
@@ -61,12 +61,7 @@ public class Stock {
 
         measure(() ->
                 symbols.stream()
-                        .map(s -> executorService.submit(() -> getStockInfo(s))) // two nested lambdas
-                        .collect(Collectors.toList()).stream() // start execution
-                        .map(this::getFutureValue)  // get the values
-                        .filter(s -> s.getPrice() < 500)
-                        .max(Comparator.comparingDouble(StockInfo::getPrice))
-                        .ifPresent(System.out::println)
+
         );
 
         executorService.shutdown();
