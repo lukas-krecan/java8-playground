@@ -29,7 +29,7 @@ import static net.javacrumbs.common.Utils.measure;
 public class Primes {
     public static void main(String[] args) {
         measure(() ->
-                System.out.println(range(1, 1_000_000).parallel().filter(Primes::isPrime).count())
+                System.out.println(range(1, 10_000_000).parallel().filter(Primes::isPrime).count())
         );
     }
 

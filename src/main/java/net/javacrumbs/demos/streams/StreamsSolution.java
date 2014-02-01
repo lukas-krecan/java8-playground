@@ -104,7 +104,7 @@ public class StreamsSolution {
         System.out.println("Max age by gender");
         System.out.println(
                 people.stream()
-                        .collect(groupingBy(Person::getGender, mapping(Person::getAge, maxBy(naturalOrder()))))
+                        .collect(groupingBy(Person::getGender, maxBy(comparingInt(Person::getAge))))
         );
 
         System.out.println("First male older than 24");
