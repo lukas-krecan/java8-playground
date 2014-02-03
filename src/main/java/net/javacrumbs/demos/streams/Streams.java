@@ -18,25 +18,34 @@ package net.javacrumbs.demos.streams;
 import net.javacrumbs.common.Person;
 
 import java.util.List;
+import java.util.Random;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static java.lang.Math.sqrt;
 import static java.util.Arrays.asList;
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparingInt;
 import static java.util.Comparator.naturalOrder;
 import static java.util.stream.Collectors.averagingInt;
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.maxBy;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.LongStream.rangeClosed;
 import static net.javacrumbs.common.Person.Sex.FEMALE;
 import static net.javacrumbs.common.Person.Sex.MALE;
 
 public class Streams {
     private static final List<Person> people = asList(
+            new Person("Adam", 30, MALE),
             new Person("Bill", 23, MALE),
             new Person("John", 25, MALE),
-            new Person("Jane", 25, FEMALE),
-            new Person("Adam", 30, MALE)
+            new Person("Jane", 25, FEMALE)
     );
+
+    private static final String TEXT = "Jane, Adam, Bill, John";
 
     public static void main(String[] args) {
         //print the list
@@ -46,18 +55,22 @@ public class Streams {
 
         System.out.println("just the names sorted by age");
 
-        System.out.println("just guys sorted by name");
-
         System.out.println("max age");
 
-        System.out.println("avg age");
-
         System.out.println("Number of women");
+
+        System.out.println("First random divisible by 137");
+
+        System.out.println("Map of people by name");
 
         System.out.println("just guys sorted by name as list");
 
         System.out.println("Males and females in map");
 
         System.out.println("Average age by gender");
+    }
+
+    public static boolean isPrime(long n) {
+        return n > 2;
     }
 }

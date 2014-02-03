@@ -19,22 +19,20 @@ import net.javacrumbs.common.Person;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.function.BinaryOperator;
+import java.util.Random;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparingInt;
 import static java.util.Comparator.comparingLong;
-import static java.util.Comparator.naturalOrder;
 import static java.util.stream.Collectors.averagingInt;
-import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.maxBy;
-import static java.util.stream.Collectors.reducing;
+import static java.util.stream.Collectors.toMap;
 import static net.javacrumbs.common.Person.Sex.FEMALE;
 import static net.javacrumbs.common.Person.Sex.MALE;
 
@@ -45,6 +43,8 @@ public class StreamsSolution {
             new Person("Jane", 25, FEMALE),
             new Person("Adam", 30, MALE)
     );
+
+    private static final String TEXT = "Jane, Adam, Bill, John";
 
     public static void main(String[] args) {
         //print the list
@@ -88,6 +88,13 @@ public class StreamsSolution {
                         .collect(Collectors.toList())
         );
 
+        System.out.println("First random divisible by 137");
+        new Random().ints().filter(i -> i % 137 == 0).findFirst().ifPresent(System.out::println);
+
+        System.out.println("Only names in TEXT starting at 'J'");
+        System.out.println(Pattern.compile(",").splitAsStream(TEXT).map(String::trim).filter(s -> s.startsWith("J")).collect(joining(", ")));
+
+
         System.out.println("Males and females in map");
         System.out.println(
                 people.stream()
@@ -99,6 +106,9 @@ public class StreamsSolution {
                 people.stream()
                         .collect(groupingBy(Person::getGender, averagingInt(Person::getAge)))
         );
+
+        System.out.println("Map of people by name");
+        System.out.println(people.stream().collect(toMap(Person::getName, p -> p)));
 
 
         System.out.println("Max age by gender");
