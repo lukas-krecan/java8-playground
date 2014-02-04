@@ -24,6 +24,8 @@ import java.util.concurrent.TimeUnit;
 import static java.lang.Math.sqrt;
 import static java.util.stream.IntStream.range;
 import static java.util.stream.LongStream.rangeClosed;
+import static net.javacrumbs.common.Utils.log;
+import static net.javacrumbs.common.Utils.sleep;
 
 public class ParallelTest {
     public static void main(String[] args) throws InterruptedException {
@@ -45,20 +47,10 @@ public class ParallelTest {
     }
 
     private static void runTask(int delay) {
-        range(1, 1_000_000).parallel().filter(ParallelTest::isPrime).peek(i -> sleep(delay)).max()
-                .ifPresent(Utils::log);
+        log(range(1, 1_000_000).parallel().filter(ParallelTest::isPrime).peek(i -> sleep(delay)).count());
     }
 
     public static boolean isPrime(long n) {
         return n > 1 && rangeClosed(2, (long) sqrt(n)).noneMatch(divisor -> n % divisor == 0);
-    }
-
-    public static void sleep(int i) {
-        if (i > 0) {
-            try {
-                Thread.sleep(i);
-            } catch (InterruptedException e) {
-            }
-        }
     }
 }

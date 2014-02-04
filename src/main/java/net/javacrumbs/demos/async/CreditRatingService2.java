@@ -12,15 +12,17 @@ import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static net.javacrumbs.common.Utils.log;
 import static net.javacrumbs.common.Utils.sleep;
 
-public class CreditRatingService {
+public class CreditRatingService2 {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 
         int userId = 1;
-
         log("Start");
-        CompletableFuture.supplyAsync(() -> getUser(userId))
-                .thenApply(CreditRatingService::getCreditRatingSystem1)
-                .thenAccept(Utils::log);
+
+        CompletableFuture<User> user = supplyAsync(() -> getUser(userId));
+        CompletableFuture<CreditRating> rating1 = user.thenApplyAsync(CreditRatingService2::getCreditRatingSystem1);
+        CompletableFuture<CreditRating> rating2 = user.thenApplyAsync(CreditRatingService2::getCreditRatingSystem2);
+        rating1.thenCombineAsync(rating2, CreditRating::combine).thenAccept(Utils::log);
+
 
         log("End");
         Thread.sleep(1000L);

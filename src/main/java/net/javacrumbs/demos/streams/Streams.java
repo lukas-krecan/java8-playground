@@ -54,7 +54,7 @@ public class Streams {
         //print the list
         people.stream().forEach(System.out::println);
 
-        System.out.println("just the names");//mthod inference
+        System.out.println("just the names");//type inference
 
         System.out.println("just the names sorted by age");
 

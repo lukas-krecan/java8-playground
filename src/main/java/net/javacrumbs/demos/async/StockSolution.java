@@ -17,7 +17,6 @@ package net.javacrumbs.demos.async;
 
 import net.javacrumbs.common.StockInfo;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
@@ -26,32 +25,31 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
 
 import static java.lang.Math.abs;
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 import static net.javacrumbs.common.Utils.log;
 import static net.javacrumbs.common.Utils.measure;
 import static net.javacrumbs.common.Utils.sleep;
 
 public class StockSolution {
-
     public static void main(String[] args) {
         List<String> symbols = asList(
                 "AMD", "HPQ", "IBM", "TXN", "VMW", "XRX", "AAPL", "ADBE",
                 "AMZN", "CRAY", "CSCO", "DELL", "GOOG", "INTC", "INTU",
                 "MSFT", "ORCL", "TIBX", "VRSN", "YHOO");
 
-        new StockSolution().doRun(symbols);
+        new StockSolution().doRun2(symbols);
     }
 
     private void doRun(List<String> symbols) {
         measure(() ->
-                symbols.stream().parallel()
-                        .map(this::getStockInfo) //slow network operation
-                        .filter(s -> s.getPrice() < 500)
-                        .max(Comparator.comparingDouble(StockInfo::getPrice))
-                        .ifPresent(System.out::println)
+                System.out.println(
+                        symbols.stream().parallel()
+                                .map(this::getStockInfo) //slow network operation
+                                .collect(toList())
+                )
         );
     }
 
@@ -60,12 +58,10 @@ public class StockSolution {
 
         measure(() ->
                 symbols.stream()
-                        .map(s -> executorService.submit(() -> getStockInfo(s))) // two nested lambdas
-                        .collect(Collectors.toList()).stream() // start execution
-                        .map(this::getFutureValue)  // get the values
-                        .filter(s -> s.getPrice() < 500)
-                        .max(Comparator.comparingDouble(StockInfo::getPrice))
-                        .ifPresent(System.out::println)
+                        .map(symbol -> executorService.submit(() -> getStockInfo(symbol)))
+                        .collect(toList()).stream()
+                        .map(this::getFutureValue)
+                        .forEach(System.out::println)
         );
 
         executorService.shutdown();
@@ -82,7 +78,7 @@ public class StockSolution {
         return abs(symbol.hashCode()) % 1000.0;
     }
 
-    private StockInfo getFutureValue(Future<StockInfo> f) {
+    private <T> T getFutureValue(Future<T> f) {
         try {
             return f.get(500, TimeUnit.MILLISECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {

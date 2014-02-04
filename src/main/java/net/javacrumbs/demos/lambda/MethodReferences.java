@@ -63,7 +63,7 @@ public class MethodReferences {
         //default methods
         //collection.sort() .stream() are default methods
         people.sort(comparingInt(Person::getAge).reversed().thenComparing(comparing(Person::getName)));
-        System.out.println("By price and name " + people);
+        System.out.println("By age and name " + people);
     }
 
     private static int compareByAge(Person s1, Person s2) {

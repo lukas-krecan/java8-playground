@@ -26,7 +26,9 @@ import static net.javacrumbs.common.Utils.log;
 
 public class PrimesPrint {
     public static void main(String[] args) {
-        System.out.println(range(1, 128).parallel().filter(PrimesPrint::isPrime).collect(ArrayList::new, PrimesPrint::addToList, PrimesPrint::combine));
+        System.out.println(
+                range(1, 128).parallel().filter(PrimesPrint::isPrime).collect(ArrayList::new, PrimesPrint::addToList, PrimesPrint::combine)
+        );
     }
 
     private static void addToList(List<Long> list, Long n) {

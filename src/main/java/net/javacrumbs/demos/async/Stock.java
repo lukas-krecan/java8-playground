@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.Math.abs;
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 import static net.javacrumbs.common.Utils.log;
 import static net.javacrumbs.common.Utils.measure;
 import static net.javacrumbs.common.Utils.sleep;
@@ -48,11 +49,11 @@ public class Stock {
 
     private void doRun(List<String> symbols) {
         measure(() ->
-                symbols.stream().parallel()
-                        .map(this::getStockInfo) //slow network operation
-                        .filter(s -> s.getPrice() < 500)
-                        .max(Comparator.comparingDouble(StockInfo::getPrice))
-                        .ifPresent(System.out::println)
+                System.out.println(
+                        symbols.stream().parallel()
+                                .map(this::getStockInfo) //slow network operation
+                                .collect(toList())
+                )
         );
     }
 
@@ -78,7 +79,7 @@ public class Stock {
         return abs(symbol.hashCode()) % 1000.0;
     }
 
-    private StockInfo getFutureValue(Future<StockInfo> f) {
+    private <T> T getFutureValue(Future<T> f) {
         try {
             return f.get(500, TimeUnit.MILLISECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
