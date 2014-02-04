@@ -91,6 +91,14 @@ public class StreamsSolution {
         System.out.println("First random divisible by 137");
         new Random().ints().filter(i -> i % 137 == 0).findFirst().ifPresent(System.out::println);
 
+        System.out.println("Map of people by name");
+        Map<String, Object> peopleMap = people.stream().collect(toMap(Person::getName, p -> p));
+        System.out.println(peopleMap);
+
+        System.out.println("People for names");
+        List<String> names = asList("Adam", "Jane");
+        names.stream().map(peopleMap::get).forEach(System.out::println);
+
         System.out.println("Only names in TEXT starting at 'J'");
         System.out.println(Pattern.compile(",").splitAsStream(TEXT).map(String::trim).filter(s -> s.startsWith("J")).collect(joining(", ")));
 

@@ -18,7 +18,9 @@ package net.javacrumbs.demos.streams;
 import net.javacrumbs.common.Person;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -32,6 +34,7 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.maxBy;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.LongStream.rangeClosed;
 import static net.javacrumbs.common.Person.Sex.FEMALE;
@@ -51,7 +54,7 @@ public class Streams {
         //print the list
         people.stream().forEach(System.out::println);
 
-        System.out.println("just the names");
+        System.out.println("just the names");//mthod inference
 
         System.out.println("just the names sorted by age");
 
@@ -59,18 +62,13 @@ public class Streams {
 
         System.out.println("Number of women");
 
-        System.out.println("First random divisible by 137");
-
         System.out.println("Map of people by name");
 
-        System.out.println("just guys sorted by name as list");
+        System.out.println("People for names");
+        List<String> names = asList("John", "Jane");
 
-        System.out.println("Males and females in map");
+        System.out.println("First random divisible by 137");
 
         System.out.println("Average age by gender");
-    }
-
-    public static boolean isPrime(long n) {
-        return n > 2;
     }
 }
