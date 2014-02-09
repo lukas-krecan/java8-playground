@@ -19,7 +19,7 @@ public class CreditRatingService {
 
         log("Start");
         CompletableFuture.supplyAsync(() -> getUser(userId))
-                .thenApply(CreditRatingService::getCreditRatingSystem1)
+                .thenApply(CreditRatingService::getCreditRatingFromSystem1)
                 .thenAccept(Utils::log);
 
         log("End");
@@ -33,7 +33,7 @@ public class CreditRatingService {
     }
 
 
-    private static CreditRating getCreditRatingSystem1(User user) {
+    private static CreditRating getCreditRatingFromSystem1(User user) {
         sleep(100);
         log("Rating 1 loaded");
 //        throw new IllegalStateException("Error");
@@ -41,7 +41,7 @@ public class CreditRatingService {
     }
 
 
-    private static CreditRating getCreditRatingSystem2(User user) {
+    private static CreditRating getCreditRatingFromSystem2(User user) {
         sleep(50);
         log("Rating 2 loaded");
         return new CreditRating(user, 100);

@@ -17,6 +17,7 @@ package net.javacrumbs.demos.lambda;
 
 import net.javacrumbs.common.Person;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -35,7 +36,7 @@ public class Lambdas {
                 new Person("Adam", 30, MALE)
         );
 
-        people.sort(new Comparator<Person>() {
+        Collections.sort(people, new Comparator<Person>() {
             @Override
             public int compare(Person p1, Person p2) {
                 return Integer.compare(p1.getAge(), p2.getAge());
