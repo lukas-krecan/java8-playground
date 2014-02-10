@@ -56,19 +56,19 @@ public class Streams {
 
         System.out.println("just the names");//type inference
 
-        System.out.println("just the names sorted by age");
+        //System.out.println("just the names sorted by age");
 
-        System.out.println("max age");
+        //System.out.println("max age");
 
-        System.out.println("Number of women");
+        //System.out.println("Number of women");
 
-        System.out.println("Map of people by name");
+        //System.out.println("Map of people by name");
 
-        System.out.println("People for names");
-        List<String> names = asList("John", "Jane");
+        //System.out.println("People for names");
+        //List<String> names = asList("John", "Jane");
 
-        System.out.println("First random divisible by 137");
+        //System.out.println("First random divisible by 137");
 
-        System.out.println("Average age by gender");
+        //System.out.println("Average age by gender");
     }
 }
