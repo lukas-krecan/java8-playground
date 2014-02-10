@@ -28,6 +28,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.lang.Math.abs;
 import static java.util.Arrays.asList;
@@ -44,17 +45,27 @@ public class Stock {
                 "AMZN", "CRAY", "CSCO", "DELL", "GOOG", "INTC", "INTU",
                 "MSFT", "ORCL", "TIBX", "VRSN", "YHOO");
 
-        new Stock().doRun(symbols);
+        new Stock().doRun(symbols.stream());
     }
 
-    private void doRun(List<String> symbols) {
+    private void doRun(Stream<String> symbols) {
         measure(() ->
                 System.out.println(
-                        symbols.stream().parallel()
-                                .map(this::getStockInfo) //slow network operation
-                                .collect(toList())
+                        getStockInfo(symbols)
                 )
         );
+    }
+
+    /**
+     * Gets stream of stock info on the input, returns collection of stock info
+     *
+     * @param symbols
+     * @return
+     */
+    private List<StockInfo> getStockInfo(Stream<String> symbols) {
+        return symbols.parallel()
+                .map(this::getStockInfo) //slow network operation
+                .collect(toList());
     }
 
     private void doRun2(List<String> symbols) {

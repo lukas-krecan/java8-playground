@@ -15,22 +15,19 @@
  */
 package net.javacrumbs.demos.parallel;
 
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import static java.lang.Math.sqrt;
 import static java.util.stream.LongStream.range;
 import static java.util.stream.LongStream.rangeClosed;
-import static net.javacrumbs.common.Utils.log;
 import static net.javacrumbs.common.Utils.measure;
 
 
 public class Primes {
     public static void main(String[] args) {
-        measure(() ->
-                System.out.println(range(1, 10_000_000).parallel().filter(Primes::isPrime).count())
-        );
+        measure(() -> System.out.println(countPrimes(10_000_000)));
+    }
+
+    private static long countPrimes(int max) {
+        return range(1, max).parallel().filter(Primes::isPrime).count();
     }
 
     public static boolean isPrime(long n) {
