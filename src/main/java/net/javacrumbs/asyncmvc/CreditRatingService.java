@@ -36,7 +36,7 @@ public class CreditRatingService {
         Thread.sleep(1000L);
     }
 
-    public static CompletableFuture<Object> getCreditRating(int userId) {
+    public static CompletableFuture<CreditRating> getCreditRating(int userId) {
         CompletableFuture<User> user = supplyAsync(() -> getUser(userId));
         log("Calling rating 1");
         //async is important here

@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import java.util.concurrent.CompletableFuture;
+
+import static net.javacrumbs.asyncmvc.CreditRatingService.CreditRating;
 import static net.javacrumbs.asyncmvc.CreditRatingService.getCreditRating;
 
 @Controller
@@ -20,7 +23,8 @@ public class AsyncController {
     @ResponseBody
     DeferredResult<String> home() {
         DeferredResult<String> result = new DeferredResult<>(5000);
-        getCreditRating(1)
+        CompletableFuture<CreditRating> creditRatingFuture = getCreditRating(1);
+        creditRatingFuture
                 .whenComplete((cr, e) -> {
                     if (e == null) {
                         result.setResult(cr.toString());
