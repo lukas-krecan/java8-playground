@@ -31,6 +31,10 @@ import static net.javacrumbs.common.Person.Sex.MALE;
 public class MethodReferences {
 
     public static void main(String[] args) {
+        new MethodReferences().run();
+    }
+
+    private void run() {
         List<Person> people = asList(
                 new Person("Bill", 23, MALE),
                 new Person("John", 25, MALE),
@@ -42,8 +46,16 @@ public class MethodReferences {
         people.sort((a, b) -> a.getName().compareTo(b.getName()));
         System.out.println("By name " + people);
 
+        //lambda - see the type inference
+        people.sort(Comparator.comparing(Person::getName));
+        System.out.println("By name " + people);
+
         //reference to static method
         people.sort(MethodReferences::compareByAge);
+        System.out.println("By age 1 " + people);
+
+        //reference to instance method
+        people.sort(this::compareByAge2);
         System.out.println("By age 1 " + people);
 
 
@@ -67,6 +79,9 @@ public class MethodReferences {
     }
 
     private static int compareByAge(Person s1, Person s2) {
+        return Integer.compare(s1.getAge(), s2.getAge());
+    }
+    private int compareByAge2(Person s1, Person s2) {
         return Integer.compare(s1.getAge(), s2.getAge());
     }
 

@@ -17,10 +17,14 @@ package net.javacrumbs.demos.streams;
 
 import net.javacrumbs.common.Person;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
@@ -28,10 +32,12 @@ import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparingInt;
 import static java.util.Comparator.comparingLong;
 import static java.util.stream.Collectors.averagingInt;
+import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.maxBy;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static net.javacrumbs.common.Person.Sex.FEMALE;
 import static net.javacrumbs.common.Person.Sex.MALE;
@@ -52,6 +58,9 @@ public class StreamsSolution {
 
         System.out.println("just the names");
         people.stream().map(Person::getName).forEach(System.out::println);
+
+        System.out.println("First from A");
+        System.out.println(people.stream().filter(p -> p.getName().startsWith("A")).findFirst());
 
         System.out.println("just the names sorted by age");
         people.stream()
@@ -118,7 +127,6 @@ public class StreamsSolution {
         System.out.println("Map of people by name");
         System.out.println(people.stream().collect(toMap(Person::getName, p -> p)));
 
-
         System.out.println("Max age by gender");
         System.out.println(
                 people.stream()
@@ -135,11 +143,15 @@ public class StreamsSolution {
                 people.stream()
                         .map(Person::getName)
                         .flatMapToInt(String::chars)
-                        .mapToObj(i -> Character.valueOf((char) i))
+                        .mapToObj(i -> (char) i)
                         .map(Character::toLowerCase)
                         .collect(groupingBy(c -> c, counting()))
                         .entrySet().stream().max(comparingLong(Map.Entry::getValue))
         );
 
+    }
+
+    public static <T> Collector<T, ?, List<T>> toUnmodifiableList() {
+        return collectingAndThen(toList(), Collections::unmodifiableList);
     }
 }
