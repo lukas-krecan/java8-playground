@@ -28,8 +28,10 @@ import static java.lang.Math.sqrt;
 import static java.util.Arrays.asList;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparingInt;
+import static java.util.Comparator.comparingLong;
 import static java.util.Comparator.naturalOrder;
 import static java.util.stream.Collectors.averagingInt;
+import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.mapping;
@@ -70,5 +72,8 @@ public class Streams {
         //System.out.println("First random divisible by 137");
 
         //System.out.println("Average age by gender");
+
+        System.out.println("Most frequent character in the name");
+
     }
 }
