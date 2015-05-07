@@ -27,7 +27,7 @@ public class StreamsDeepDive {
 
         IntStream.range(0, 10).forEach(i -> {
             set1.add(() -> System.out.println("Hi"));
-            set2.add(() -> System.out.println("Hi" + i));
+            set2.add(() -> System.out.println("Hi" + j));
         });
 
         // Implementation specific
@@ -55,22 +55,22 @@ public class StreamsDeepDive {
 
     public static void streams() {
         List<Person> people = asList(
-                new Person("Bill", 23, MALE),
+                new Person("Eve", 23, MALE),
                 new Person("John", 25, MALE),
-                new Person("Jane", 25, FEMALE),
+                new Person("Billy", 25, FEMALE),
                 new Person(null, 30, MALE)
         );
 
         people.stream()
-    //            .filter(p -> p.getName() != null)
+                .filter(p -> p.getName() != null)
                 .mapToInt(p -> p.getName().length())
                 .max()
                 .ifPresent(System.out::println);
 
         people.stream()
                 .map(Person::getName)
-                .filter(Objects::nonNull)
-                .mapToInt(StreamsDeepDive::length)
+   //             .filter(Objects::nonNull)
+                .mapToInt(String::length)
                 .forEach(System.out::println);
     }
 
