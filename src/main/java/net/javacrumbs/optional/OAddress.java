@@ -5,7 +5,7 @@ package net.javacrumbs.optional;
 
 import java.util.Optional;
 
-public class OptionalAddress {
+public class OAddress {
     private String street;
 
     public Optional<String> getStreet() {

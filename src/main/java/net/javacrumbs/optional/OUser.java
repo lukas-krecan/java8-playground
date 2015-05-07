@@ -5,14 +5,14 @@ package net.javacrumbs.optional;
 
 import java.util.Optional;
 
-public class OptionalUser {
-    private OptionalAddress address;
+public class OUser {
+    private OAddress address;
 
-    public Optional<OptionalAddress> getAddress() {
+    public Optional<OAddress> getAddress() {
         return Optional.ofNullable(address);
     }
 
-    public void setAddress(OptionalAddress address) {
+    public void setAddress(OAddress address) {
         this.address = address;
     }
 }
