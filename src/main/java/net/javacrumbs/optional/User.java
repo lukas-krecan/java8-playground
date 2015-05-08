@@ -3,14 +3,14 @@
  */
 package net.javacrumbs.optional;
 
-public class NormalUser {
-    private NormalAddress address;
+public class User {
+    private Address address;
 
-    public NormalAddress getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(NormalAddress address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 }
