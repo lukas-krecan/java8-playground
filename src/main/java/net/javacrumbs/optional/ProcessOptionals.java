@@ -4,14 +4,15 @@
 package net.javacrumbs.optional;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static java.util.Optional.ofNullable;
 
 public class ProcessOptionals {
 
     public static void main(String[] args) {
-        Optional<String> optional = Optional.ofNullable("test");
-        optional.get(); //may throw NoSuchElementException
+        Optional<String> optional = Stream.of("test").filter(s -> s.startsWith("t")).findFirst();
+        if (optional.isPresent()) optional.get(); //may throw NoSuchElementException
         optional.ifPresent(System.out::println);
         System.out.println(optional.orElse("default"));
 
@@ -42,7 +43,8 @@ public class ProcessOptionals {
         }
 
         System.out.print("Normal map.ifPresent: ");
-        ofNullable(user).map(User::getAddress).map(Address::getStreet).filter(s -> s.length() > 3).ifPresent(System.out::println);
+        ofNullable(user).map(User::getAddress).map(Address::getStreet)
+                .filter(s -> s.length() > 3).ifPresent(System.out::println);
         System.out.println();
     }
 

@@ -14,6 +14,7 @@ interface ISpeak {
     default void speak() {
         System.out.println("ISpeak Speaking!");
     }
+
 }
 
 interface ISpeak2 extends ISpeak {
