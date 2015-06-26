@@ -43,7 +43,7 @@ public class ProcessOptionals {
         }
 
         System.out.print("Normal map.ifPresent: ");
-        ofNullable(user).map(User::getAddress).map(Address::getStreet)
+        Optional.ofNullable(user).map(User::getAddress).map(Address::getStreet)
                 .filter(s -> s.length() > 3).ifPresent(System.out::println);
         System.out.println();
     }

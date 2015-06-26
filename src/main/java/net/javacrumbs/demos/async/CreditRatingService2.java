@@ -7,6 +7,8 @@ import net.javacrumbs.common.Utils;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static net.javacrumbs.common.Utils.log;
@@ -14,41 +16,78 @@ import static net.javacrumbs.common.Utils.sleep;
 
 public class CreditRatingService2 {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
+        new CreditRatingService2().run();
 
-        int userId = 1;
+
+    }
+
+    private void run() throws InterruptedException {
+        ExecutorService executor = Executors.newCachedThreadPool();
+
         log("Start");
+        int userId = 1;
+//        supplyAsync(() -> getUser(userId), executor)
+//                .thenApply(this::getCreditRatingFromSystem1)
+//                .thenAccept(Utils::log);
 
-        CompletableFuture<User> user = supplyAsync(() -> getUser(userId));
-        CompletableFuture<CreditRating> rating1 = user.thenApplyAsync(CreditRatingService2::getCreditRatingFromSystem1);
-        CompletableFuture<CreditRating> rating2 = user.thenApplyAsync(CreditRatingService2::getCreditRatingFromSystem2);
-        rating1.thenCombineAsync(rating2, CreditRating::combine).thenAccept(Utils::log);
+//
+//
+//        CompletableFuture<User> user = supplyAsync(() -> getUser(userId), executor);
+//        CompletableFuture<CreditRating> rating1 = user.thenApply(this::getCreditRatingFromSystem1);
+//        CompletableFuture<CreditRating> rating2 = user.thenApply(this::getCreditRatingFromSystem2);
+//        rating1.thenCombine(rating2, CreditRating::combine).thenAccept(Utils::log);
+////
+//        CompletableFuture<User> user = supplyAsync(() -> getUser(userId), executor);
+//        CompletableFuture<CreditRating> rating1 = user.thenApplyAsync(this::getCreditRatingFromSystem1, executor);
+//        CompletableFuture<CreditRating> rating2 = user.thenApplyAsync(this::getCreditRatingFromSystem2, executor);
+//        rating1.thenCombine(rating2, CreditRating::combine).thenAccept(Utils::log);
+//
+//        rating1.acceptEither(rating2, Utils::log);
+//
+        supplyAsync(() -> getUser(userId), executor).thenApply(this::getCreditRatingFromSystem3)
+                .thenAccept(Utils::log);
+
+//        supplyAsync(() -> getUser(userId), executor).thenApply(this::getCreditRatingFromSystem3)
+//                .thenAccept(Utils::log).whenComplete((x, e) -> e.printStackTrace());
+//
+//        CompletableFuture<User> uf = new CompletableFuture<>();
+//        uf.complete(new User(1));
 
 
         log("End");
         Thread.sleep(1000L);
+        executor.shutdown();
     }
 
-    private static User getUser(int id) {
+    private User getUser(int id) {
+        log("User load start");
         sleep(100);
-        log("User loaded");
+        log("User load end");
         return new User(id);
     }
 
 
-    private static CreditRating getCreditRatingFromSystem1(User user) {
+    private CreditRating getCreditRatingFromSystem1(User user) {
+        log("Rating 1 load start");
         sleep(100);
-        log("Rating 1 loaded");
-//        throw new IllegalStateException("Error");
+        log("Rating 1 load end");
         return new CreditRating(user, 75);
     }
 
 
-    private static CreditRating getCreditRatingFromSystem2(User user) {
-        sleep(50);
-        log("Rating 2 loaded");
+    private CreditRating getCreditRatingFromSystem2(User user) {
+        log("Rating 2 load start");
+        sleep(150);
+        log("Rating 2 load end");
         return new CreditRating(user, 100);
     }
 
+    private CreditRating getCreditRatingFromSystem3(User user) {
+        log("Rating 3 load start");
+        sleep(100);
+        log("Rating 3 load end");
+        throw new RuntimeException("Error");
+    }
 
     public static class User {
         private final int id;
