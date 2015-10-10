@@ -20,33 +20,31 @@ import static java.util.stream.IntStream.range;
 import static java.util.stream.LongStream.rangeClosed;
 import static net.javacrumbs.common.Utils.log;
 import static net.javacrumbs.common.Utils.measure;
+import static net.javacrumbs.common.Utils.sleep;
 
 import java.util.BitSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
-public class Example6PrimesAsAService {
+public class Example7PrimesCaching {
     private final BitSet isKnown = new BitSet();
     private final BitSet isPrime = new BitSet();
 
     public static void main(String[] args) throws InterruptedException {
-        new Example6PrimesAsAService().doRun();
+        new Example7PrimesCaching().doRun();
     }
 
     private void doRun() throws InterruptedException {
         ExecutorService executor = Executors.newCachedThreadPool();
+        executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
+        sleep(2000);
 
         measure(() -> {
-            executor.submit(() -> measure(() -> log(countPrimes(1, Integer.MAX_VALUE))));
-            Thread.yield();
             executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
             executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
             executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
-            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
-            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
-            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
-
 
             executor.shutdown();
             try {
@@ -64,7 +62,16 @@ public class Example6PrimesAsAService {
     }
 
     public boolean isPrime(int n) {
-        return n > 1 && rangeClosed(2, (long) sqrt(n)).noneMatch(divisor -> n % divisor == 0);
+        synchronized (isKnown) {
+            if (isKnown.get(n)) {
+                return isPrime.get(n);
+            }
+        }
+        boolean result = n > 1 && rangeClosed(2, (long) sqrt(n)).noneMatch(divisor -> n % divisor == 0);
+        synchronized (isKnown) {
+            isKnown.set(n, true);
+            isPrime.set(n, result);
+        }
+        return result;
     }
 }
-

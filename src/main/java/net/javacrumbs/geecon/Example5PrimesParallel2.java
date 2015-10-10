@@ -31,7 +31,10 @@ public class Example5PrimesParallel2 {
     }
 
     private long countPrimes(int from, int to) {
-        return range(from, to).filter(this::isPrime).parallel().count();
+        return range(from, to)
+                .filter(this::isPrime)
+                .parallel()
+                .count();
     }
 
     public boolean isPrime(long n) {
