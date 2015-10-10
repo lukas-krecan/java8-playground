@@ -27,7 +27,6 @@ public class Utils {
         measure(runnable, time -> log("Time taken: " + time + "ms"));
     }
 
-
     public static <T> void measure(Runnable runnable, Consumer<Long> consumer) {
         long start = System.currentTimeMillis();
         runnable.run();
@@ -65,6 +64,10 @@ public class Utils {
 
             }
         }
+    }
+
+    public interface InterruptableRunnable {
+        void run() throws InterruptedException;
     }
 
 }
