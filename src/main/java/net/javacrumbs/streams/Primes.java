@@ -40,8 +40,9 @@ public class Primes {
 //        System.out.println(counter);
 
 
-        measure(() ->
-                range(1, 10_000_000).parallel().filter(Primes::isPrime).count()
+        measure(() -> {
+                return range(1, 10_000_000).parallel().filter(Primes::isPrime).count();
+            }
 //                System.out.println(range(1, 1024).parallel().filter(Primes::isPrime).collect(ArrayList::new, Primes::addToList, Primes::combine))
 //              System.out.println(range(1, 100).parallel().filter(Primes::isPrime).findFirst().getAsLong())
         );

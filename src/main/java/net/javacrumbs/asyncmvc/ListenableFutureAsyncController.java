@@ -5,35 +5,35 @@ package net.javacrumbs.asyncmvc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsAsyncClientHttpRequestFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.AsyncRestTemplate;
 import org.springframework.web.context.request.async.DeferredResult;
 
-import java.util.concurrent.Callable;
-
-import static net.javacrumbs.asyncmvc.CreditRatingService.CreditRating;
-import static net.javacrumbs.common.Utils.sleep;
+import static net.javacrumbs.common.Utils.log;
 
 
 @Controller
 @EnableAutoConfiguration
 public class ListenableFutureAsyncController {
-
+    private final AsyncRestTemplate restTemplate = new AsyncRestTemplate(new HttpComponentsAsyncClientHttpRequestFactory());
 
     @RequestMapping("/")
     @ResponseBody
     DeferredResult<String> home() {
         DeferredResult<String> result = new DeferredResult<>(5000);
 
-        ListenableFuture<CreditRating> creditRatingFuture = getCreditRating(1);
-        creditRatingFuture.addCallback(new ListenableFutureCallback<CreditRating>() {
+        ListenableFuture<ResponseEntity<String>> creditRatingFuture = restTemplate.getForEntity("http://www.google.com", String.class);
+        creditRatingFuture.addCallback(new ListenableFutureCallback<ResponseEntity<String>>() {
             @Override
-            public void onSuccess(CreditRating cr) {
-                result.setResult(cr.toString());
+            public void onSuccess(ResponseEntity<String>  response) {
+                log("Success");
+                result.setResult(response.getBody());
             }
 
             @Override
@@ -42,23 +42,6 @@ public class ListenableFutureAsyncController {
             }
         });
         return result;
-    }
-
-    private final SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor();
-
-    /**
-     * Simulates asynchronous network communication.
-     *
-     * @param userId
-     * @return
-     */
-    public ListenableFuture<CreditRating> getCreditRating(int userId) {
-        return executor.submitListenable(
-                () -> {
-                    sleep(100);
-                    return new CreditRating(new CreditRatingService.User(userId), 100);
-                }
-        );
     }
 
 

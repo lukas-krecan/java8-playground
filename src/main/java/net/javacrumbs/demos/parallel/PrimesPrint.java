@@ -17,18 +17,29 @@ package net.javacrumbs.demos.parallel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static java.lang.Math.sqrt;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.stream.LongStream.range;
 import static java.util.stream.LongStream.rangeClosed;
 import static net.javacrumbs.common.Utils.log;
 
 
 public class PrimesPrint {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException {
+        ForkJoinPool forkJoinPool = new ForkJoinPool(2);
         System.out.println(
-                range(1, 128).parallel().filter(PrimesPrint::isPrime).collect(ArrayList::new, PrimesPrint::addToList, PrimesPrint::combine)
+               forkJoinPool.submit(() ->
+                    range(1, 128).parallel().filter(PrimesPrint::isPrime).collect(ArrayList::new, PrimesPrint::addToList, PrimesPrint::combine)
+               ).get(60, SECONDS)
         );
+
+
+        forkJoinPool.awaitTermination(60, SECONDS);
     }
 
     private static void addToList(List<Long> list, Long n) {

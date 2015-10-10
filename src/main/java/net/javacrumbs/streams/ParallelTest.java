@@ -19,6 +19,7 @@ import net.javacrumbs.common.Utils;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.sqrt;
@@ -29,25 +30,26 @@ import static net.javacrumbs.common.Utils.sleep;
 
 public class ParallelTest {
     public static void main(String[] args) throws InterruptedException {
+
+
         ExecutorService es = Executors.newCachedThreadPool();
 
         // Simulating multiple threads in the system if one of them is executing long running task.
         // Some of the other threads/tasks are waiting for it to finish
 
-        es.execute(() -> runTask(1000)); //incorrect task
-        es.execute(() -> runTask(0));
-        es.execute(() -> runTask(0));
-        es.execute(() -> runTask(0));
-        es.execute(() -> runTask(0));
-        es.execute(() -> runTask(0));
-
+        es.execute(() -> runTask(Integer.MAX_VALUE));
+        Thread.yield();
+        es.execute(() -> runTask(1_000_000));
+        es.execute(() -> runTask(1_000_000));
+        es.execute(() -> runTask(1_000_000));
+        es.execute(() -> runTask(1_000_000));
 
         es.shutdown();
         es.awaitTermination(60, TimeUnit.SECONDS);
     }
 
-    private static void runTask(int delay) {
-        log(range(1, 1_000_000).parallel().filter(ParallelTest::isPrime).peek(i -> sleep(delay)).count());
+    private static void runTask(int limit) {
+        log(range(1, limit).parallel().filter(ParallelTest::isPrime).count());
     }
 
     public static boolean isPrime(long n) {
