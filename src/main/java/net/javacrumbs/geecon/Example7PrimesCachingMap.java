@@ -23,25 +23,33 @@ import static net.javacrumbs.common.Utils.measure;
 import static net.javacrumbs.common.Utils.sleep;
 
 import java.util.BitSet;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-public class Example7PrimesCaching {
-    private final BitSet isKnown = new BitSet();
-    private final BitSet isPrime = new BitSet();
+public class Example7PrimesCachingMap {
+    private final ConcurrentMap<Integer, Boolean> isPrime = new ConcurrentHashMap<>();
 
-    public static void main(String[] args) throws InterruptedException {
-        new Example7PrimesCaching().doRun();
+
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
+        new Example7PrimesCachingMap().doRun();
     }
 
-    private void doRun() throws InterruptedException {
+    private void doRun() throws InterruptedException, ExecutionException {
         ExecutorService executor = Executors.newCachedThreadPool();
-        executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
-        sleep(2000);
+        // warm up
+//        Future<?> future = executor.submit(() -> measure(() -> log(countPrimes(1, 2_000_000))));
+//        future.get();
 
         measure(() -> {
+            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
+            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
+            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
+            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
             executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
             executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
             executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
@@ -61,17 +69,7 @@ public class Example7PrimesCaching {
                 .count();
     }
 
-    public boolean isPrime(int n) {
-        synchronized (isKnown) {
-            if (isKnown.get(n)) {
-                return isPrime.get(n);
-            }
-        }
-        boolean result = n > 1 && rangeClosed(2, (long) sqrt(n)).noneMatch(divisor -> n % divisor == 0);
-        synchronized (isKnown) {
-            isKnown.set(n, true);
-            isPrime.set(n, result);
-        }
-        return result;
+    public boolean isPrime(int i) {
+        return isPrime.computeIfAbsent(i, n -> n > 1 && rangeClosed(2, (long) sqrt(n)).noneMatch(divisor -> n % divisor == 0));
     }
 }
