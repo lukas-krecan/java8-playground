@@ -26,9 +26,9 @@ public class CreditRatingService2 {
 
         log("Start");
         int userId = 1;
-//        supplyAsync(() -> getUser(userId), executor)
-//                .thenApply(this::getCreditRatingFromSystem1)
-//                .thenAccept(Utils::log);
+        supplyAsync(() -> getUser(userId), executor)
+                .thenApply(this::getCreditRatingFromSystem1)
+                .thenAccept(Utils::log);
 
 //
 //
@@ -44,11 +44,11 @@ public class CreditRatingService2 {
 //
 //        rating1.acceptEither(rating2, Utils::log);
 //
-        supplyAsync(() -> getUser(userId), executor).thenApply(this::getCreditRatingFromSystem3)
-                .thenAccept(Utils::log);
-
 //        supplyAsync(() -> getUser(userId), executor).thenApply(this::getCreditRatingFromSystem3)
-//                .thenAccept(Utils::log).whenComplete((x, e) -> e.printStackTrace());
+//                .thenAccept(Utils::log);
+
+        supplyAsync(() -> getUser(userId), executor).thenApply(this::getCreditRatingFromSystem2)
+                .thenAccept(Utils::log).whenComplete((x, e) -> e.printStackTrace());
 //
 //        CompletableFuture<User> uf = new CompletableFuture<>();
 //        uf.complete(new User(1));
