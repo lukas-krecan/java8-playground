@@ -35,22 +35,26 @@ import java.util.concurrent.TimeoutException;
 
 import net.javacrumbs.common.StockInfo;
 
-public class Example3StockFuturesCollect {
+public class Example3StockFuturesCollectExecutor {
 
     private static final List<String> SYMBOLS = asList(
             "AMD", "HPQ", "IBM", "TXN", "VMW", "XRX", "AAPL", "ADBE",
             "AMZN", "CRAY", "CSCO", "DELL", "GOOG", "INTC", "INTU",
             "MSFT", "ORCL", "TIBX", "VRSN", "YHOO");
 
+    private static final ExecutorService executorService = Executors.newFixedThreadPool(20);
+
     public static void main(String[] args) {
-        new Example3StockFuturesCollect().doRun(SYMBOLS);
+        new Example3StockFuturesCollectExecutor().doRun(SYMBOLS);
+        executorService.shutdown();
     }
+
 
     private void doRun(List<String> symbols) {
         measure(() ->
                 symbols.stream()
                         .map(this::getStockInfo)
-                        .collect(toList()) // collect to start calculation
+                        .collect(toList())
                         .stream()
                         .map(this::getFutureValue)
                         .max(Comparator.comparingDouble(StockInfo::getPrice))
@@ -59,7 +63,7 @@ public class Example3StockFuturesCollect {
     }
 
     public Future<StockInfo> getStockInfo(String symbol) {
-        return CompletableFuture.supplyAsync(() -> new StockInfo(symbol, calculatePrice(symbol)));
+        return CompletableFuture.supplyAsync(() -> new StockInfo(symbol, calculatePrice(symbol)), executorService);
     }
 
     // Simulating long network task

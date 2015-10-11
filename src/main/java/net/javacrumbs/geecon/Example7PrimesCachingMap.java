@@ -42,8 +42,8 @@ public class Example7PrimesCachingMap {
     private void doRun() throws InterruptedException, ExecutionException {
         ExecutorService executor = Executors.newCachedThreadPool();
         // warm up
-//        Future<?> future = executor.submit(() -> measure(() -> log(countPrimes(1, 2_000_000))));
-//        future.get();
+        Future<?> future = executor.submit(() -> measure(() -> log(countPrimes(1, 2_000_000))));
+        future.get();
 
         measure(() -> {
             executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));

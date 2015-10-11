@@ -23,6 +23,7 @@ import static net.javacrumbs.common.Utils.sleep;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -40,11 +41,9 @@ public class Example2StockFutures {
             "AMZN", "CRAY", "CSCO", "DELL", "GOOG", "INTC", "INTU",
             "MSFT", "ORCL", "TIBX", "VRSN", "YHOO");
 
-    private static final ExecutorService executorService = Executors.newFixedThreadPool(20);
 
     public static void main(String[] args) {
         new Example2StockFutures().doRun(SYMBOLS);
-        executorService.shutdown();
     }
 
     private void doRun(List<String> symbols) {
@@ -58,7 +57,7 @@ public class Example2StockFutures {
     }
 
     public Future<StockInfo> getStockInfo(String symbol) {
-        return executorService.submit(() -> new StockInfo(symbol, calculatePrice(symbol)));
+        return CompletableFuture.supplyAsync(() -> new StockInfo(symbol, calculatePrice(symbol)));
     }
 
     // Simulating long network task
