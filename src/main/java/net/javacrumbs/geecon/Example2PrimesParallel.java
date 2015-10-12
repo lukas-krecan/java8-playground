@@ -21,9 +21,9 @@ import static java.util.stream.LongStream.rangeClosed;
 import static net.javacrumbs.common.Utils.log;
 import static net.javacrumbs.common.Utils.measure;
 
-public class Example5PrimesParallel2 {
+public class Example2PrimesParallel {
     public static void main(String[] args) throws InterruptedException {
-        new Example5PrimesParallel2().doRun();
+        new Example2PrimesParallel().doRun();
     }
 
     private void doRun() throws InterruptedException {
@@ -31,13 +31,11 @@ public class Example5PrimesParallel2 {
     }
 
     private long countPrimes(int from, int to) {
-        return range(from, to)
-                .filter(this::isPrime)
-                .parallel()
-                .count();
+        return range(from, to).filter(this::isPrime).count();
     }
 
     public boolean isPrime(long n) {
-        return n > 1 && rangeClosed(2, (long) sqrt(n)).noneMatch(divisor -> n % divisor == 0);
+        return n > 1 && rangeClosed(2, (long) sqrt(n))
+                .noneMatch(divisor -> n % divisor == 0);
     }
 }

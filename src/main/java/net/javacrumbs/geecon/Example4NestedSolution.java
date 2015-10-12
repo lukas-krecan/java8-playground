@@ -20,20 +20,20 @@ import static net.javacrumbs.common.Utils.measure;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class ExampleXNested {
+public class Example4NestedSolution {
 
     private static final int SIZE = 10_000;
 
     public static void main(String[] args) throws InterruptedException {
-        new ExampleXNested().doRun();
+        new Example4NestedSolution().generateRandomMatrix();
     }
 
-    public int[][] doRun() throws InterruptedException {
-        int[][] results = new int[SIZE][SIZE];
+    public byte[][] generateRandomMatrix() throws InterruptedException {
+        byte[][] results = new byte[SIZE][SIZE];
         measure(() -> {
             range(0, SIZE).parallel().forEach(i -> {
                 range(0, SIZE).parallel().forEach(j -> {
-                    results[i][j] = randomInt();
+                    results[i][j] = randomByte();
                 });
             });
 
@@ -41,10 +41,9 @@ public class ExampleXNested {
         return results;
     }
 
-    private int randomInt() {
-        return (int) Math.round(ThreadLocalRandom.current().nextDouble() * 100);
-        //return (int) Math.round(Math.random() * 100);
+    private byte randomByte() {
+        // nextInt() would have been better but not comparable to the other solution
+        return (byte) Math.round(ThreadLocalRandom.current().nextDouble() * 100);
     }
-
 
 }

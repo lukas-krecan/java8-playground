@@ -70,9 +70,10 @@ public class StreamsSolution {
 
         System.out.println("just guys sorted by name");
         people.stream()
+                .parallel()
                 .filter(p -> p.getGender() == MALE)
-                .sorted(comparing(Person::getName))
-                .forEach(System.out::println);
+                .map(Person::getName)
+                .collect(toList());
 
         System.out.println("max age");
         people.stream()

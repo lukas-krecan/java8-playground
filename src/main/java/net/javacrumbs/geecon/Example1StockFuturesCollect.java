@@ -17,6 +17,7 @@ package net.javacrumbs.geecon;
 
 import static java.lang.Math.abs;
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 import static net.javacrumbs.common.Utils.log;
 import static net.javacrumbs.common.Utils.measure;
 import static net.javacrumbs.common.Utils.sleep;
@@ -26,30 +27,29 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import net.javacrumbs.common.StockInfo;
 
-public class Example2StockFutures {
+public class Example1StockFuturesCollect {
 
     private static final List<String> SYMBOLS = asList(
             "AMD", "HPQ", "IBM", "TXN", "VMW", "XRX", "AAPL", "ADBE",
             "AMZN", "CRAY", "CSCO", "DELL", "GOOG", "INTC", "INTU",
             "MSFT", "ORCL", "TIBX", "VRSN", "YHOO");
 
-
     public static void main(String[] args) {
-        new Example2StockFutures().doRun(SYMBOLS);
+        new Example1StockFuturesCollect().doRun(SYMBOLS);
     }
 
     private void doRun(List<String> symbols) {
         measure(() ->
                 symbols.stream()
                         .map(this::getStockInfo)
+                        .collect(toList()) // collect to start calculation
+                        .stream()
                         .map(this::getFutureValue)
                         .max(Comparator.comparingDouble(StockInfo::getPrice))
                         .ifPresent(System.out::println)

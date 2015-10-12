@@ -20,9 +20,7 @@ import static java.util.stream.IntStream.range;
 import static java.util.stream.LongStream.rangeClosed;
 import static net.javacrumbs.common.Utils.log;
 import static net.javacrumbs.common.Utils.measure;
-import static net.javacrumbs.common.Utils.sleep;
 
-import java.util.BitSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
@@ -30,36 +28,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
-public class Example7PrimesCachingMap {
+public class Example5PrimesCachingMap {
     private final ConcurrentMap<Integer, Boolean> isPrime = new ConcurrentHashMap<>();
 
 
     public static void main(String[] args) throws InterruptedException, ExecutionException {
-        new Example7PrimesCachingMap().doRun();
+        new Example5PrimesCachingMap().doRun();
     }
 
     private void doRun() throws InterruptedException, ExecutionException {
-        ExecutorService executor = Executors.newCachedThreadPool();
-        // warm up
-        Future<?> future = executor.submit(() -> measure(() -> log(countPrimes(1, 2_000_000))));
-        future.get();
-
-        measure(() -> {
-            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
-            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
-            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
-            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
-            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
-            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
-            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
-
-            executor.shutdown();
-            try {
-                executor.awaitTermination(60, TimeUnit.SECONDS);
-            } catch (InterruptedException ignore) {
-            }
-        }, time -> System.out.println("Total time: " + time));
+        measure(() -> log(countPrimes(1_000_000, 2_000_000)));
+        measure(() -> log(countPrimes(1_000_000, 2_000_000)));
     }
 
     private long countPrimes(int from, int to) {
@@ -70,6 +51,10 @@ public class Example7PrimesCachingMap {
     }
 
     public boolean isPrime(int i) {
-        return isPrime.computeIfAbsent(i, n -> n > 1 && rangeClosed(2, (long) sqrt(n)).noneMatch(divisor -> n % divisor == 0));
+        return isPrime.computeIfAbsent(i, this::calculateIsPrime);
+    }
+
+    private boolean calculateIsPrime(int n) {
+        return n > 1 && rangeClosed(2, (long) sqrt(n)).noneMatch(divisor -> n % divisor == 0);
     }
 }

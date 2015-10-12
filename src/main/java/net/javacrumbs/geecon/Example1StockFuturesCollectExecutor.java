@@ -35,7 +35,7 @@ import java.util.concurrent.TimeoutException;
 
 import net.javacrumbs.common.StockInfo;
 
-public class Example3StockFuturesCollectExecutor {
+public class Example1StockFuturesCollectExecutor {
 
     private static final List<String> SYMBOLS = asList(
             "AMD", "HPQ", "IBM", "TXN", "VMW", "XRX", "AAPL", "ADBE",
@@ -45,7 +45,7 @@ public class Example3StockFuturesCollectExecutor {
     private static final ExecutorService executorService = Executors.newFixedThreadPool(20);
 
     public static void main(String[] args) {
-        new Example3StockFuturesCollectExecutor().doRun(SYMBOLS);
+        new Example1StockFuturesCollectExecutor().doRun(SYMBOLS);
         executorService.shutdown();
     }
 
@@ -64,6 +64,8 @@ public class Example3StockFuturesCollectExecutor {
 
     public Future<StockInfo> getStockInfo(String symbol) {
         return CompletableFuture.supplyAsync(() -> new StockInfo(symbol, calculatePrice(symbol)), executorService);
+        // or even better
+        // return executorService.submit(() -> new StockInfo(symbol, calculatePrice(symbol));
     }
 
     // Simulating long network task

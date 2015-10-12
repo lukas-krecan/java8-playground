@@ -26,27 +26,24 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class Example6PrimesAsAService {
-    private final BitSet isKnown = new BitSet();
-    private final BitSet isPrime = new BitSet();
-
+public class Example3PrimesAsAService {
     public static void main(String[] args) throws InterruptedException {
-        new Example6PrimesAsAService().doRun();
+        new Example3PrimesAsAService().doRun();
     }
 
     private void doRun() throws InterruptedException {
         ExecutorService executor = Executors.newCachedThreadPool();
 
+        // simulating multiple requests
         measure(() -> {
-            executor.submit(() -> measure(() -> log(countPrimes(1, Integer.MAX_VALUE))));
-            Thread.yield();
-            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
-            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
-            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
-            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
-            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
-            executor.submit(() -> measure(() -> log(countPrimes(1_000_000, 2_000_000))));
+            executor.submit(() -> countPrimes(1_000_000, Integer.MAX_VALUE));
+            executor.submit(() -> countPrimes(1_000_000, 2_000_000));
+            executor.submit(() -> countPrimes(1_000_000, 2_000_000));
+            executor.submit(() -> countPrimes(1_000_000, 2_000_000));
 
+            executor.submit(() -> countPrimes(1_000_000, 2_000_000));
+            executor.submit(() -> countPrimes(1_000_000, 2_000_000));
+            executor.submit(() -> countPrimes(1_000_000, 2_000_000));
 
             executor.shutdown();
             try {
@@ -57,10 +54,14 @@ public class Example6PrimesAsAService {
     }
 
     private long countPrimes(int from, int to) {
-        return range(from, to)
-                .filter(this::isPrime)
-                .parallel()
-                .count();
+        return measure(() -> {
+            long result = range(from, to)
+                    .filter(this::isPrime)
+                    .parallel()
+                    .count();
+            log(result);
+            return result;
+        });
     }
 
     public boolean isPrime(int n) {
