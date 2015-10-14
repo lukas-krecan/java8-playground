@@ -32,8 +32,8 @@ public class Example2PrimesParallel2 {
 
     private long countPrimes(int from, int to) {
         return range(from, to)
-                .filter(this::isPrime)
                 .parallel()
+                .filter(this::isPrime)
                 .count();
     }
 

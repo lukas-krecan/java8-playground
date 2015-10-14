@@ -36,6 +36,7 @@ public class Example2PrimesParallel {
 
     public boolean isPrime(long n) {
         return n > 1 && rangeClosed(2, (long) sqrt(n))
+                .parallel()
                 .noneMatch(divisor -> n % divisor == 0);
     }
 }
