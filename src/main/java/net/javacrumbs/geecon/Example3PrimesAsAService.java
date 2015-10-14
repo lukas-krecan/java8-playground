@@ -36,7 +36,7 @@ public class Example3PrimesAsAService {
 
         // simulating multiple requests
         measure(() -> {
-            executor.submit(() -> countPrimes(1_000_000, Integer.MAX_VALUE));
+            executor.submit(() -> countPrimes(1_000_000, 2_000_000));
             executor.submit(() -> countPrimes(1_000_000, 2_000_000));
             executor.submit(() -> countPrimes(1_000_000, 2_000_000));
             executor.submit(() -> countPrimes(1_000_000, 2_000_000));

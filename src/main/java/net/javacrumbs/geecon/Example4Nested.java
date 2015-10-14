@@ -32,7 +32,7 @@ public class Example4Nested {
         byte[][] results = new byte[SIZE][SIZE];
         measure(() -> {
             range(0, SIZE).parallel().forEach(i -> {
-                range(0, SIZE).parallel().forEach(j -> {
+                range(0, SIZE).forEach(j -> {
                     results[i][j] = randomByte();
                 });
             });

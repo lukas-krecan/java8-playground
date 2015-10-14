@@ -52,7 +52,7 @@ public class Example3PrimesAsAServiceFJPool {
             executor.submit(() -> countPrimes(1_000_000, 2_000_000));
             executor.submit(() -> countPrimes(1_000_000, 2_000_000));
 
-            sleep(50); //nasty
+            sleep(50); //nasty, we do not want to exit before the fun begins
             executor.shutdown();
             fjPool.shutdown();
             try {
@@ -68,7 +68,7 @@ public class Example3PrimesAsAServiceFJPool {
         try {
             return future.get(10, SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            future.cancel(true); // Does not work
+            future.cancel(true); // Does not have any impact
             e.printStackTrace();
             throw new PrimeCalculationException(e);
         }

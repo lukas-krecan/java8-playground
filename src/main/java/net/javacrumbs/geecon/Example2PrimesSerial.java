@@ -27,7 +27,7 @@ public class Example2PrimesSerial {
     }
 
     private void doRun() throws InterruptedException {
-        measure(() -> log(countPrimes(1_000_000, 3_000_000)));
+        measure(() -> log(countPrimes(1_000_000, 2_000_000)));
     }
 
     /**
